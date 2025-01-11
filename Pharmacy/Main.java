@@ -659,7 +659,7 @@ public class Main {
                                 }
                             }
 
-                            // Create a BasicPrescription (could be extended to other prescription types)
+                            // Create a ShowPrescription (could be extended to other prescription types)
                             Prescription prescription = new ShowPrescription(autoIndexPresc++, medicationNeeded, quantity);
 
                             // Update the medication stock after prescription
