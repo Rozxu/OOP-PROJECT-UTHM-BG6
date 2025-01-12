@@ -284,35 +284,36 @@ public class Main {
                             System.out.println("|                                                         |");
                             System.out.println("|           ~ NO MEDICATIONS AVAILABLE TO DELETE ~        |");
                             System.out.println("|_________________________________________________________|");
-                            break;
+                            break; 
                         } else {
                             System.out.println("\n-------------------------------LIST OF ALL MEDICATIONS-----------------------------------");
                             System.out.println("___________________________________________________________________________________________\n");
-
+    
                             for (Medication med : medicationList) {
                                 if (medicationList.indexOf(med) == 0) { 
                                     med.displayDetailsAsTableHeader();
                                 }
                                 med.displayDetailsAsTableRow();
                             }
-
+    
                             System.out.println("___________________________________________________________________________________________\n");
-
-                            String inputIndex;
+    
+                            boolean goBackToMainMenu = false; // Flag to control the flow
                             while (true) {
                                 System.out.print("Enter the MEDICATION INDEX to delete (or type 'back' to go back): ");
-                                inputIndex = input.next();
-
+                                String inputIndex = input.next();
+    
                                 if (inputIndex.equalsIgnoreCase("back")) {
-                                    break;
+                                    goBackToMainMenu = true; 
+                                    break; 
                                 }
-
+    
                                 try {
                                     int deleteIndex = Integer.parseInt(inputIndex);
-
+    
                                     boolean medicationFoundToDelete = false;
                                     Medication medicationToDelete = null;
-
+    
                                     // Find the medication to delete
                                     for (Medication med : medicationList) {
                                         if (med.getIndex() == deleteIndex) {
@@ -321,7 +322,7 @@ public class Main {
                                             break;
                                         }
                                     }
-
+    
                                     if (!medicationFoundToDelete) {
                                         System.out.println("\nXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX");
                                         System.out.println("     ERROR: MEDICATION WITH THIS INDEX DOES NOT EXIST.    ");
@@ -329,53 +330,47 @@ public class Main {
                                     } else {
                                         // Remove the medication from the list
                                         medicationList.remove(medicationToDelete);
-
+    
                                         // Re-index the remaining medications
                                         for (int i = 0; i < medicationList.size(); i++) {
                                             medicationList.get(i).setIndex(i + 1);
                                         }
-
+    
                                         // Update autoIndex to match the next available index
                                         autoIndexMed = medicationList.size() + 1;
-
+    
                                         System.out.println("\n-----------------------------MEDICATION HAS BEEN DELETED---------------------------------");
                                         System.out.println("___________________________________________________________________________________________\n");
-
+    
                                         if (medicationList.isEmpty()) {
                                             System.out.println("\n                   ~ NO MEDICATIONS LEFT IN THE LIST ~\n");
+                                            goBackToMainMenu = true; // Go directly back to the main menu
+                                            break;
                                         } else {
                                             for (Medication med : medicationList) {
-                                                if (medicationList.indexOf(med) == 0) { // Display header only once
+                                                if (medicationList.indexOf(med) == 0) { 
                                                     med.displayDetailsAsTableHeader();
                                                 }
                                                 med.displayDetailsAsTableRow();
                                             }
                                         }
-
+    
                                         System.out.println("___________________________________________________________________________________________\n");
                                     }
-                                    break;  // Exit the loop once a valid index is processed
+                                    break; // Exit the loop once a valid index is processed
                                 } catch (NumberFormatException e) {
                                     System.out.println("\nXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX");
                                     System.out.println("     ERROR: INVALID INPUT. PLEASE ENTER A VALID NUMBER FOR MEDICATION INDEX.   ");
                                     System.out.println("XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX\n");
                                 }
                             }
-
-                            // Ask if the user wants to delete another medication
-                            System.out.print("\nDo you want to delete another medication? (yes or type no to go back to main menu): ");
-                            String response = input.next();
-                            while (!(response.equalsIgnoreCase("yes") || response.equalsIgnoreCase("no"))) {
-                                System.out.println("\nXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX");
-                                System.out.println("          WRONG INPUT. TRY AGAIN (yes or no).");
-                                System.out.println("XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX\n");
-                                response = input.next();
-                            }
-                            if (response.equalsIgnoreCase("no")) {
-                                break;
+    
+                            if (goBackToMainMenu) {
+                                break; // Exit the outer loop and go back to the main menu
                             }
                         }
                     }
+                    break;
 
             case 4:
                 // Update Medicication Data 
